@@ -1,0 +1,15 @@
+# Database
+todo.db
+todo.db-shm
+todo.db-wal
+
+# .NET
+bin/
+obj/
+appsettings.Production.json
+
+# Node
+node_modules/
+dist/
+.vite/
+.env*.local
