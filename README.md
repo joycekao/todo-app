@@ -13,8 +13,9 @@ Users can register, log in, and manage their own private todo lists. Each user's
 
 ## Running the Backend
 
+From the `TodoApi/` directory:
+
 ```bash
-cd TodoApi
 dotnet run
 ```
 
@@ -30,8 +31,9 @@ Or use a GUI tool such as [DB Browser for SQLite](https://sqlitebrowser.org/) an
 
 ## Running the Frontend
 
+From the `TodoClient/` directory:
+
 ```bash
-cd TodoClient
 npm install
 npm run dev
 ```
@@ -42,14 +44,17 @@ The app will be available at `http://localhost:5173`.
 
 ### Backend
 
+From the project root:
+
 ```bash
 dotnet test TodoApi/Tests
 ```
 
 ### Frontend
 
+From the `TodoClient/` directory:
+
 ```bash
-cd TodoClient
 npm test
 ```
 
@@ -133,14 +138,14 @@ Response: 200 Healthy / 503 Unhealthy
 
 **POST /api/auth/register**
 ```json
-Request:  { "username": "alice", "password": "secret" }
+Request:  { "username": "alice", "password": "correcthorsebatterystaple" }
 Response: { "message": "User registered successfully." }
 ```
 Validation: username 6–26 characters, letters and numbers only, must start with a letter; password 16–64 characters.
 
 **POST /api/auth/login**
 ```json
-Request:  { "username": "alice", "password": "secret" }
+Request:  { "username": "alice", "password": "correcthorsebatterystaple" }
 Response: { "token": "<access-jwt>" }
 ```
 Also sets an `HttpOnly` cookie (`refreshToken`) valid for 7 days.
