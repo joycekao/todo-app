@@ -19,9 +19,11 @@ export default function RegisterForm({ onLogin }: Props) {
   }
 
   function validate(username: string, password: string): string | null {
-    if (username.length > 50) return ERRORS.USERNAME_TOO_LONG
-    if (password.length < 8) return ERRORS.PASSWORD_TOO_SHORT
-    if (password.length > 100) return ERRORS.PASSWORD_TOO_LONG
+    if (username.length < 6) return ERRORS.USERNAME_TOO_SHORT
+    if (username.length > 26) return ERRORS.USERNAME_TOO_LONG
+    if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(username)) return ERRORS.USERNAME_INVALID_CHARS
+    if (password.length < 16) return ERRORS.PASSWORD_TOO_SHORT
+    if (password.length > 64) return ERRORS.PASSWORD_TOO_LONG
     return null
   }
 

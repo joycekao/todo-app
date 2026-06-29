@@ -29,8 +29,10 @@ export const TODOS = {
 export const ERRORS = {
   SOMETHING_WENT_WRONG: 'Something went wrong.',
   TRY_AGAIN: 'Try again',
-  USERNAME_TOO_LONG: 'Username must be 50 characters or fewer.',
-  PASSWORD_TOO_SHORT: 'Password must be at least 8 characters.',
-  PASSWORD_TOO_LONG: 'Password must be 100 characters or fewer.',
+  USERNAME_TOO_SHORT: 'Username must be at least 6 characters.',
+  USERNAME_TOO_LONG: 'Username must be 26 characters or fewer.',
+  USERNAME_INVALID_CHARS: 'Username must start with a letter and contain only letters and numbers.',
+  PASSWORD_TOO_SHORT: 'Password must be at least 16 characters.',
+  PASSWORD_TOO_LONG: 'Password must be 64 characters or fewer.',
   TITLE_TOO_LONG: 'Title must be 200 characters or fewer.',
 }

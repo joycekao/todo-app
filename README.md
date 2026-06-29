@@ -82,7 +82,7 @@ npm test
 - Health check endpoint (`GET /health`) — returns the status of the application and its database connection, suitable for use by load balancers and uptime monitors
 - Security headers on all API responses — `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Content-Security-Policy`, `Permissions-Policy`; see `Program.cs`
 - Input validation on both frontend and backend
-  - Usernames: 1–50 characters; passwords: 8–100 characters; todo titles: 1–200 characters. Enforced on the frontend before submission for immediate feedback, and on the backend as the authoritative check
+  - Usernames: 6–26 characters, letters and numbers only, must start with a letter; passwords: 16–64 characters; todo titles: 1–200 characters. Enforced on the frontend before submission for immediate feedback, and on the backend as the authoritative check
 
 ### Out of Scope
 
@@ -136,7 +136,7 @@ Response: 200 Healthy / 503 Unhealthy
 Request:  { "username": "alice", "password": "secret" }
 Response: { "message": "User registered successfully." }
 ```
-Validation: username 1–50 characters; password 8–100 characters.
+Validation: username 6–26 characters, letters and numbers only, must start with a letter; password 16–64 characters.
 
 **POST /api/auth/login**
 ```json

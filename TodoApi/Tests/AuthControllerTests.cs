@@ -41,13 +41,16 @@ public class AuthControllerTests
         return controller;
     }
 
+    private const string ValidUsername = "alice123";
+    private const string ValidPassword = "correcthorsebatterystaple";
+
     [Fact]
     public async Task Register_WithValidCredentials_ReturnsOk()
     {
         using var db = CreateDb();
         var controller = CreateController(db);
 
-        var result = await controller.Register(new RegisterDto("alice", "password123"));
+        var result = await controller.Register(new RegisterDto(ValidUsername, ValidPassword));
 
         Assert.IsType<OkObjectResult>(result);
     }
@@ -58,8 +61,8 @@ public class AuthControllerTests
         using var db = CreateDb();
         var controller = CreateController(db);
 
-        await controller.Register(new RegisterDto("alice", "password123"));
-        var result = await controller.Register(new RegisterDto("alice", "otherpassword"));
+        await controller.Register(new RegisterDto(ValidUsername, ValidPassword));
+        var result = await controller.Register(new RegisterDto(ValidUsername, ValidPassword));
 
         Assert.IsType<BadRequestObjectResult>(result);
     }
@@ -70,7 +73,18 @@ public class AuthControllerTests
         using var db = CreateDb();
         var controller = CreateController(db);
 
-        var result = await controller.Register(new RegisterDto("", "password123"));
+        var result = await controller.Register(new RegisterDto("", ValidPassword));
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task Register_WithUsernameTooShort_ReturnsBadRequest()
+    {
+        using var db = CreateDb();
+        var controller = CreateController(db);
+
+        var result = await controller.Register(new RegisterDto("abc", ValidPassword));
 
         Assert.IsType<BadRequestObjectResult>(result);
     }
@@ -81,7 +95,29 @@ public class AuthControllerTests
         using var db = CreateDb();
         var controller = CreateController(db);
 
-        var result = await controller.Register(new RegisterDto(new string('a', 51), "password123"));
+        var result = await controller.Register(new RegisterDto(new string('a', 27), ValidPassword));
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task Register_WithUsernameStartingWithDigit_ReturnsBadRequest()
+    {
+        using var db = CreateDb();
+        var controller = CreateController(db);
+
+        var result = await controller.Register(new RegisterDto("1alice", ValidPassword));
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task Register_WithUsernameContainingInvalidChars_ReturnsBadRequest()
+    {
+        using var db = CreateDb();
+        var controller = CreateController(db);
+
+        var result = await controller.Register(new RegisterDto("alice_123", ValidPassword));
 
         Assert.IsType<BadRequestObjectResult>(result);
     }
@@ -92,7 +128,7 @@ public class AuthControllerTests
         using var db = CreateDb();
         var controller = CreateController(db);
 
-        var result = await controller.Register(new RegisterDto("alice", "short"));
+        var result = await controller.Register(new RegisterDto(ValidUsername, "tooshort"));
 
         Assert.IsType<BadRequestObjectResult>(result);
     }
@@ -103,7 +139,7 @@ public class AuthControllerTests
         using var db = CreateDb();
         var controller = CreateController(db);
 
-        var result = await controller.Register(new RegisterDto("alice", new string('a', 101)));
+        var result = await controller.Register(new RegisterDto(ValidUsername, new string('a', 65)));
 
         Assert.IsType<BadRequestObjectResult>(result);
     }
@@ -114,8 +150,8 @@ public class AuthControllerTests
         using var db = CreateDb();
         var controller = CreateController(db);
 
-        await controller.Register(new RegisterDto("alice", "password123"));
-        var result = await controller.Login(new LoginDto("alice", "password123"));
+        await controller.Register(new RegisterDto(ValidUsername, ValidPassword));
+        var result = await controller.Login(new LoginDto(ValidUsername, ValidPassword));
 
         var ok = Assert.IsType<OkObjectResult>(result);
         var value = ok.Value!.ToString();
@@ -128,8 +164,8 @@ public class AuthControllerTests
         using var db = CreateDb();
         var controller = CreateController(db);
 
-        await controller.Register(new RegisterDto("alice", "password123"));
-        var result = await controller.Login(new LoginDto("alice", "wrongpassword"));
+        await controller.Register(new RegisterDto(ValidUsername, ValidPassword));
+        var result = await controller.Login(new LoginDto(ValidUsername, "wrongpasswordthatisalsolongenough"));
 
         Assert.IsType<UnauthorizedObjectResult>(result);
     }
@@ -140,7 +176,7 @@ public class AuthControllerTests
         using var db = CreateDb();
         var controller = CreateController(db);
 
-        var result = await controller.Login(new LoginDto("nobody", "password123"));
+        var result = await controller.Login(new LoginDto("nobody", ValidPassword));
 
         Assert.IsType<UnauthorizedObjectResult>(result);
     }

@@ -36,10 +36,10 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     {
         var client = CreateClient();
 
-        var register = await client.PostAsJsonAsync("/api/auth/register", new { username = "alice", password = "password123" });
+        var register = await client.PostAsJsonAsync("/api/auth/register", new { username = "alice123", password = "correcthorsebatterystaple" });
         Assert.Equal(HttpStatusCode.OK, register.StatusCode);
 
-        var login = await client.PostAsJsonAsync("/api/auth/login", new { username = "alice", password = "password123" });
+        var login = await client.PostAsJsonAsync("/api/auth/login", new { username = "alice123", password = "correcthorsebatterystaple" });
         Assert.Equal(HttpStatusCode.OK, login.StatusCode);
 
         var body = await login.Content.ReadFromJsonAsync<Dictionary<string, string>>();
@@ -61,8 +61,8 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     {
         var client = CreateClient(new WebApplicationFactoryClientOptions { HandleCookies = true });
 
-        await client.PostAsJsonAsync("/api/auth/register", new { username = "carol", password = "password123" });
-        await client.PostAsJsonAsync("/api/auth/login", new { username = "carol", password = "password123" });
+        await client.PostAsJsonAsync("/api/auth/register", new { username = "carol123", password = "correcthorsebatterystaple" });
+        await client.PostAsJsonAsync("/api/auth/login", new { username = "carol123", password = "correcthorsebatterystaple" });
 
         var refresh = await client.PostAsync("/api/auth/refresh", null);
         Assert.Equal(HttpStatusCode.OK, refresh.StatusCode);
@@ -86,8 +86,8 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     {
         var client = CreateClient(new WebApplicationFactoryClientOptions { HandleCookies = true });
 
-        await client.PostAsJsonAsync("/api/auth/register", new { username = "dave", password = "password123" });
-        await client.PostAsJsonAsync("/api/auth/login", new { username = "dave", password = "password123" });
+        await client.PostAsJsonAsync("/api/auth/register", new { username = "dave123", password = "correcthorsebatterystaple" });
+        await client.PostAsJsonAsync("/api/auth/login", new { username = "dave123", password = "correcthorsebatterystaple" });
 
         var logout = await client.PostAsync("/api/auth/logout", null);
         Assert.Equal(HttpStatusCode.OK, logout.StatusCode);
@@ -101,8 +101,8 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     {
         var client = CreateClient();
 
-        await client.PostAsJsonAsync("/api/auth/register", new { username = "bob", password = "password123" });
-        var login = await client.PostAsJsonAsync("/api/auth/login", new { username = "bob", password = "password123" });
+        await client.PostAsJsonAsync("/api/auth/register", new { username = "bob123", password = "correcthorsebatterystaple" });
+        var login = await client.PostAsJsonAsync("/api/auth/login", new { username = "bob123", password = "correcthorsebatterystaple" });
         var loginBody = await login.Content.ReadFromJsonAsync<Dictionary<string, string>>();
         var token = loginBody!["token"];
 

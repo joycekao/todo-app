@@ -46,14 +46,17 @@ public class AuthController : ControllerBase
         if (string.IsNullOrWhiteSpace(dto.Username) || string.IsNullOrWhiteSpace(dto.Password))
             return BadRequest(new { message = "Username and password are required." });
 
-        if (dto.Username.Length > 50)
-            return BadRequest(new { message = "Username must be 50 characters or fewer." });
+        if (dto.Username.Length < 6 || dto.Username.Length > 26)
+            return BadRequest(new { message = "Username must be 6–26 characters." });
 
-        if (dto.Password.Length < 8)
-            return BadRequest(new { message = "Password must be at least 8 characters." });
+        if (!char.IsLetter(dto.Username[0]) || !dto.Username.All(char.IsLetterOrDigit))
+            return BadRequest(new { message = "Username must start with a letter and contain only letters and numbers." });
 
-        if (dto.Password.Length > 100)
-            return BadRequest(new { message = "Password must be 100 characters or fewer." });
+        if (dto.Password.Length < 16)
+            return BadRequest(new { message = "Password must be at least 16 characters." });
+
+        if (dto.Password.Length > 64)
+            return BadRequest(new { message = "Password must be 64 characters or fewer." });
 
         if (await _db.Users.AnyAsync(u => u.Username == dto.Username))
             return BadRequest(new { message = "Username already taken." });
